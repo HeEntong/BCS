@@ -1,0 +1,146 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      4693,        138]
+NotebookOptionsPosition[      4209,        121]
+NotebookOutlinePosition[      4612,        137]
+CellTagsIndexPosition[      4569,        134]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Load", " ", "the", " ", "necessary", " ", "package"}], "*)"}], 
+  "\[IndentingNewLine]", "\n", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Define", " ", "the", " ", "number", " ", "of", " ", "vertices", " ", "n", 
+    " ", "and", " ", "chromatic", " ", "number", " ", "k"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"n", "=", "4"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"k", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Generate", " ", "all", " ", "non"}], "-", 
+     RowBox[{
+     "isomorphic", " ", "graphs", " ", "with", " ", "n", " ", "vertices"}]}], 
+    "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"graphs", "=", 
+     RowBox[{"ListGraphs", "[", "n", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Compute", " ", "chromatic", " ", "number", " ", "for", " ", "each", " ", 
+     "graph"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"chromaticNumbers", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"ChromaticNumber", "[", 
+        RowBox[{"graphs", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", 
+         RowBox[{"Length", "[", "graphs", "]"}]}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Select", " ", "graphs", " ", "with", " ", "chromatic", " ", "number", 
+     " ", "k"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"filteredGraphs", "=", 
+     RowBox[{"Select", "[", 
+      RowBox[{"graphs", ",", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"ChromaticNumber", "[", "#", "]"}], "==", "k"}], "&"}]}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Print", " ", "the", " ", "filtered", " ", "graphs"}], "*)"}], 
+   "\n", "filteredGraphs", "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.9265315704719048`*^9, 3.926531573821327*^9}, {
+  3.9265316590642147`*^9, 
+  3.9265317232054806`*^9}},ExpressionUUID->"ba60d10c-e2b6-b546-8c48-\
+28e0c1415525"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   InterpretationBox[
+    StyleBox[
+     RowBox[{"\[SkeletonIndicator]", 
+      RowBox[{"Graph", ":", "<"}], "3", ",", "4", ",", "Undirected", 
+      RowBox[{">", "\[SkeletonIndicator]"}]}],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Combinatorica`Graph[{{{2, 3}}, {{2, 4}}, {{3, 
+     4}}}, {{{0, 1.}}, {{-1., 0}}, {{0, -1.}}, {{1., 0}}}],
+    Editable->False], ",", 
+   InterpretationBox[
+    StyleBox[
+     RowBox[{"\[SkeletonIndicator]", 
+      RowBox[{"Graph", ":", "<"}], "4", ",", "4", ",", "Undirected", 
+      RowBox[{">", "\[SkeletonIndicator]"}]}],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Combinatorica`Graph[{{{1, 2}}, {{1, 3}}, {{1, 4}}, {{2, 
+     3}}}, {{{0, 1.}}, {{-1., 0}}, {{0, -1.}}, {{1., 0}}}],
+    Editable->False], ",", 
+   InterpretationBox[
+    StyleBox[
+     RowBox[{"\[SkeletonIndicator]", 
+      RowBox[{"Graph", ":", "<"}], "5", ",", "4", ",", "Undirected", 
+      RowBox[{">", "\[SkeletonIndicator]"}]}],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Combinatorica`Graph[{{{1, 2}}, {{1, 3}}, {{1, 4}}, {{2, 3}}, {{2, 
+     4}}}, {{{0, 1.}}, {{-1., 0}}, {{0, -1.}}, {{1., 0}}}],
+    Editable->False]}], "}"}]], "Output",
+ CellChangeTimes->{3.9265315774426746`*^9, 3.926531668149065*^9, 
+  3.926531701170742*^9},
+ CellLabel->"Out[97]=",ExpressionUUID->"909f9385-14e1-6d40-a7f1-1a8c61277acb"]
+}, Open  ]]
+},
+WindowSize->{798, 663},
+WindowMargins->{{-810, Automatic}, {Automatic, 0}},
+FrontEndVersion->"14.0 for Microsoft Windows (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"6f9e5fa3-1289-ed4b-8800-81a6d176a195"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 2205, 59, 390, "Input",ExpressionUUID->"ba60d10c-e2b6-b546-8c48-28e0c1415525"],
+Cell[2788, 83, 1405, 35, 32, "Output",ExpressionUUID->"909f9385-14e1-6d40-a7f1-1a8c61277acb"]
+}, Open  ]]
+}
+]
+*)
+
