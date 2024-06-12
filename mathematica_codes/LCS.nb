@@ -1,0 +1,4630 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[    172182,       4622]
+NotebookOptionsPosition[    164171,       4518]
+NotebookOutlinePosition[    164604,       4535]
+CellTagsIndexPosition[    164561,       4532]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{"<<", " ", "NC`"}], "\[IndentingNewLine]", 
+ RowBox[{"<<", " ", "NCAlgebra`"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"<<", " ", "NCGBX`"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"commutator", "[", 
+     RowBox[{"x_", ",", " ", "y_"}], "]"}], " ", ":=", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"x", " ", "**", " ", "y"}], " ", "-", " ", 
+      RowBox[{"y", " ", "**", " ", "x"}]}], "}"}]}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "A", " ", "is", " ", "of", " ", "size", " ", "m", " ", "x", " ", "n"}], 
+    ",", " ", 
+    RowBox[{"b", " ", "of", " ", "size", " ", "n"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Both", " ", "A", " ", "and", " ", "b", " ", "are", " ", "F_", "2", " ", 
+    "matrices"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"LCSfeasibilityQC", "[", 
+    RowBox[{"A_", ",", "b_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "dim", ",", "m", ",", "n", ",", " ", "Vi", ",", " ", "len", ",", " ", 
+       "rels", ",", " ", "expr", ",", " ", "perfectStrategyExists"}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<LCS game instance (A, b): \>\"", ",", " ", 
+        RowBox[{"MatrixForm", "[", "A", "]"}], " ", ",", "\"\<x = \>\"", ",", 
+        " ", 
+        RowBox[{"MatrixForm", "[", "b", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"dim", "=", 
+       RowBox[{"Dimensions", "[", "A", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"m", "=", 
+       RowBox[{"dim", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"n", "=", 
+       RowBox[{"dim", "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"var", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"Subscript", "[", 
+          RowBox[{"x", ",", "i"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "n"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"SetNonCommutative", "[", "x", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"SetNonCommutative", "[", 
+       RowBox[{"x", ",", " ", "w"}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"SetMonomialOrder", "[", 
+       RowBox[{"var", ",", " ", "w"}], "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"rels", " ", "=", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"w", " ", "**", " ", "w"}], "-", " ", "1"}], "}"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+        RowBox[{"i", " ", "<=", " ", "m"}], ",", " ", 
+        RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", "\t", 
+        RowBox[{
+         RowBox[{"Vi", " ", "=", " ", 
+          RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", "\t", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"j", " ", "=", " ", "1"}], ",", " ", 
+           RowBox[{"j", " ", "<=", " ", "n"}], ",", " ", 
+           RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", "\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"A", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", " ", "j"}], "]"}], "]"}], " ", "==", " ", 
+              "1"}], ",", "\[IndentingNewLine]", "\t", 
+             RowBox[{"AppendTo", "[", 
+              RowBox[{"Vi", ",", " ", "j"}], "]"}]}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"len", " ", "=", " ", 
+          RowBox[{"Length", "[", "Vi", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"j", " ", "=", " ", "1"}], ",", " ", 
+           RowBox[{"j", " ", "<=", " ", "len"}], ",", " ", 
+           RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", "\t", 
+           RowBox[{"For", "[", 
+            RowBox[{
+             RowBox[{"k", " ", "=", " ", "1"}], ",", " ", 
+             RowBox[{"k", " ", "<=", " ", "len"}], ",", " ", 
+             RowBox[{"k", "++"}], ",", "\[IndentingNewLine]", "\t", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"j", " ", "!=", " ", "k"}], ",", "\[IndentingNewLine]",
+                "\t", 
+               RowBox[{
+                RowBox[{"expr", " ", "=", " ", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"var", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Vi", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], "]"}], "]"}], " ", "**", 
+                   " ", 
+                   RowBox[{"var", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Vi", "[", 
+                    RowBox[{"[", "k", "]"}], "]"}], "]"}], "]"}]}], " ", "-", 
+                  " ", 
+                  RowBox[{
+                   RowBox[{"var", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Vi", "[", 
+                    RowBox[{"[", "k", "]"}], "]"}], "]"}], "]"}], " ", "**", 
+                   " ", 
+                   RowBox[{"var", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Vi", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], "]"}], "]"}]}]}]}], ";", 
+                "\[IndentingNewLine]", "\t", 
+                RowBox[{"AppendTo", "[", 
+                 RowBox[{"rels", ",", " ", "expr"}], "]"}]}]}], 
+              "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"expr", " ", "=", "  ", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"len", " ", ">", " ", "0"}], ",", " ", 
+            RowBox[{"Fold", "[", 
+             RowBox[{"NonCommutativeMultiply", ",", " ", 
+              RowBox[{"var", "[", 
+               RowBox[{"[", "Vi", "]"}], "]"}]}], "]"}], ",", " ", "1"}], 
+           "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"b", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], " ", "==", " ", "0"}], ",", " ", 
+           RowBox[{"AppendTo", "[", 
+            RowBox[{"rels", ",", " ", 
+             RowBox[{"expr", " ", "-", " ", "1"}]}], "]"}], ",", " ", 
+           RowBox[{"AppendTo", "[", 
+            RowBox[{"rels", ",", " ", 
+             RowBox[{"expr", " ", "-", " ", "w"}]}], "]"}]}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"j", " ", "=", " ", "1"}], ",", " ", 
+        RowBox[{"j", " ", "<=", " ", "n"}], ",", " ", 
+        RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"rels", ",", " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"var", "[", 
+              RowBox[{"[", "j", "]"}], "]"}], " ", "**", " ", "w"}], " ", "-",
+             " ", 
+            RowBox[{"w", " ", "**", " ", 
+             RowBox[{"var", "[", 
+              RowBox[{"[", "j", "]"}], "]"}]}]}]}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"rels", ",", " ", 
+           RowBox[{
+            RowBox[{"aj", "[", 
+             RowBox[{"var", "[", 
+              RowBox[{"[", "j", "]"}], "]"}], "]"}], " ", "-", " ", 
+            RowBox[{"var", "[", 
+             RowBox[{"[", "j", "]"}], "]"}]}]}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"rels", ",", " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"var", "[", 
+              RowBox[{"[", "j", "]"}], "]"}], " ", "**", " ", 
+             RowBox[{"var", "[", 
+              RowBox[{"[", "j", "]"}], "]"}]}], " ", "-", " ", "1"}]}], "]"}],
+          ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"gb", " ", "=", " ", 
+       RowBox[{"NCMakeGB", "[", 
+        RowBox[{"rels", ",", " ", "15"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<Groebner basis: \>\"", ",", " ", "gb"}], "]"}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"perfectStrategyExists", " ", "=", " ", 
+       RowBox[{"Not", "[", 
+        RowBox[{"MemberQ", "[", 
+         RowBox[{"gb", ",", " ", 
+          RowBox[{"w", "->", "1"}]}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{"perfectStrategyExists", ",", "\[IndentingNewLine]", 
+        RowBox[{
+        "Print", "[", 
+         "\"\<LCS game has perfect quantum commuting-operator strategy.\>\"", 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+        "Print", "[", 
+         "\"\<No perfect quantum commuting-operator strategy exists for LCS \
+game.\>\"", "]"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]",
+       "\[IndentingNewLine]", 
+      RowBox[{"{", "perfectStrategyExists", "}"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Generate", " ", "a", " ", "random", " ", "connected", " ", "graph"}], " ",
+    "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"RandomConnectedGraph", "[", 
+    RowBox[{"V_", ",", " ", "p_"}], "]"}], " ", ":=", " ", 
+   RowBox[{"Module", "[", " ", 
+    RowBox[{
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"graph", " ", "=", " ", 
+       RowBox[{"RandomGraph", "[", 
+        RowBox[{
+         RowBox[{"BernoulliGraphDistribution", "[", 
+          RowBox[{"V", ",", " ", "p"}], "]"}], ",", " ", 
+         RowBox[{"DirectedEdges", "->", " ", "False"}]}], "]"}]}], "}"}], ",",
+      "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"While", " ", "[", 
+       RowBox[{
+        RowBox[{"Not", "[", 
+         RowBox[{"ConnectedGraphQ", "[", "graph", "]"}], "]"}], ",", " ", 
+        RowBox[{"(*", " ", 
+         RowBox[{
+         "Filter", " ", "out", " ", "those", " ", "unconnected", " ", 
+          "ones"}], " ", "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"graph", " ", "=", " ", 
+         RowBox[{"RandomGraph", "[", 
+          RowBox[{
+           RowBox[{"BernoulliGraphDistribution", "[", 
+            RowBox[{"V", ",", " ", "p"}], "]"}], ",", " ", 
+           RowBox[{"DirectedEdges", "->", " ", "False"}]}], "]"}]}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", "graph"}]}], 
+    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Theorem", ":", "\[IndentingNewLine]", "\t", 
+     RowBox[{"An", " ", "LCS", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"I", 
+         RowBox[{"(", "G", ")"}]}], ",", " ", "b"}], ")"}], " ", "where", " ",
+       "I", 
+      RowBox[{"(", "G", ")"}], " ", "is", " ", "the", " ", "incidence", " ", 
+      "matrix", " ", "of", " ", "graph", " ", "G"}]}], ",", 
+    "\[IndentingNewLine]", "\t ", 
+    RowBox[{
+     RowBox[{
+     "has", " ", "perfect", " ", "quantum", " ", "strategy", " ", "iff"}], 
+     " ", "|", "b", "|", " ", 
+     RowBox[{"\[Element]", " ", 
+      RowBox[{
+      "2", "Z", " ", "and", " ", "G", " ", "includes", " ", "at", " ", 
+       "least", " ", "one", " ", "of", " ", "K", 
+       RowBox[{"(", 
+        RowBox[{"3", ",", " ", "3"}], ")"}], " ", "\[IndentingNewLine]", "  ",
+        "and", " ", "K", 
+       RowBox[{"(", "5", ")"}], " ", "as", " ", "a", " ", "graph", " ", 
+       RowBox[{"minor", "."}]}]}]}]}], "\[IndentingNewLine]", " ", "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"RandomBinaryVec", "[", "V_", "]"}], " ", ":=", " ", 
+    RowBox[{"RandomInteger", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", "V"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"RandomGraphLCS", "[", "V_", "]"}], " ", ":=", " ", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"g", ",", " ", "A", ",", " ", "b"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"g", " ", "=", " ", 
+       RowBox[{"RandomConnectedGraph", "[", 
+        RowBox[{"V", ",", " ", ".15"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", "g", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"A", " ", "=", " ", 
+       RowBox[{"IncidenceMatrix", "[", "g", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"b", " ", "=", " ", 
+       RowBox[{"RandomBinaryVec", "[", "V", "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"LCSfeasibilityQC", "[", 
+        RowBox[{"A", ",", " ", "b"}], "]"}], "}"}]}]}], "\[IndentingNewLine]",
+     "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Testing", " ", "the", " ", "The", " ", "Mermin"}], "-", 
+    RowBox[{"Peres", " ", "magic", " ", "square", " ", "game"}]}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"A", " ", "=", " ", 
+   RowBox[{"ConstantArray", "[", 
+    RowBox[{"0", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"6", ",", " ", "9"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"For", "[", 
+  RowBox[{
+   RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+   RowBox[{"i", " ", "<=", " ", "3"}], ",", " ", 
+   RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"For", " ", "[", " ", 
+    RowBox[{
+     RowBox[{"j", " ", "=", " ", "1"}], ",", " ", 
+     RowBox[{"j", " ", "<=", " ", "3"}], ",", " ", 
+     RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"A", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", 
+          RowBox[{"j", " ", "+", " ", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"i", "-", "1"}], ")"}], " ", "*", " ", "3"}]}]}], "]"}], 
+        "]"}], " ", "=", " ", "1"}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"A", "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{"i", " ", "+", " ", "3"}], ",", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"j", "-", "1"}], ")"}], " ", "*", " ", "3"}], " ", "+", 
+           " ", "i"}]}], "]"}], "]"}], " ", "=", " ", "1"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"b", " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{
+     "0", ",", " ", "1", ",", " ", "0", ",", " ", "0", ",", " ", "0", ",", 
+      " ", "1"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Clear", "[", 
+     RowBox[{"A", ",", " ", "b", ",", " ", "n"}], "]"}], ";"}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"test", " ", "=", " ", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"RandomGraphLCS", "[", "15", "]"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", " ", "0", ",", " ", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", "test", "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Count", "[", 
+     RowBox[{"test", ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"{", "False", "}"}], "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"LCSfeasibilityQC", "[", 
+   RowBox[{"A", ",", " ", "b"}], "]"}], 
+  ";"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.926435896980753*^9, 3.9264359317169037`*^9}, {
+   3.9264362054383144`*^9, 3.9264362343269176`*^9}, {3.9264362706638775`*^9, 
+   3.9264363799825*^9}, 3.926436431822373*^9, {3.9264364649214497`*^9, 
+   3.92643654543075*^9}, {3.926438634108589*^9, 3.926438647568957*^9}, {
+   3.926439289906086*^9, 3.9264394604461784`*^9}, {3.926439498269819*^9, 
+   3.92643953204702*^9}, {3.926439566183449*^9, 3.9264396190283*^9}, {
+   3.9264400932249527`*^9, 3.9264401152719707`*^9}, {3.926440155871975*^9, 
+   3.926440397752081*^9}, {3.9264404296292424`*^9, 3.9264404561379547`*^9}, {
+   3.926440550105715*^9, 3.926440578346922*^9}, {3.926440660298094*^9, 
+   3.926440727707325*^9}, 3.9264407600319176`*^9, {3.9264408141875134`*^9, 
+   3.926441022584854*^9}, {3.92644111318462*^9, 3.9264412914545517`*^9}, {
+   3.9264414563745937`*^9, 3.9264415127890244`*^9}, {3.926441544511764*^9, 
+   3.926441550626356*^9}, {3.926441584423246*^9, 3.926441704957905*^9}, {
+   3.9264417803460674`*^9, 3.9264418348923187`*^9}, {3.926441903942024*^9, 
+   3.926441912698154*^9}, {3.926442027964418*^9, 3.926442070136217*^9}, {
+   3.926442265829803*^9, 3.92644228434621*^9}, {3.926442335104358*^9, 
+   3.926442339227052*^9}, {3.92644237887311*^9, 3.926442428042511*^9}, {
+   3.926442459366461*^9, 3.926442515873964*^9}, {3.926442595311273*^9, 
+   3.926442706432525*^9}, {3.926442925046941*^9, 3.926442976423115*^9}, {
+   3.926443039804808*^9, 3.9264431321764965`*^9}, {3.9264432572316093`*^9, 
+   3.9264432992729397`*^9}, {3.926443501742157*^9, 3.926443614580244*^9}, {
+   3.926443703348964*^9, 3.926443734458809*^9}, {3.926443781159649*^9, 
+   3.926443915229997*^9}, {3.926443965011219*^9, 3.926443973527408*^9}, {
+   3.926444023506203*^9, 3.926444095263064*^9}, {3.9264441824923687`*^9, 
+   3.926444335152981*^9}, {3.926444429897693*^9, 3.926444449699703*^9}, {
+   3.9264445249017143`*^9, 3.926444540462389*^9}, {3.92644461558766*^9, 
+   3.926444663564851*^9}, {3.926445056839894*^9, 3.926445161966959*^9}, {
+   3.9264451928691397`*^9, 3.926445254375896*^9}, {3.9264453123963394`*^9, 
+   3.926445421301622*^9}, {3.926445551886104*^9, 3.92644563687169*^9}, {
+   3.92644567280011*^9, 3.926445713984516*^9}, {3.926445804529207*^9, 
+   3.926445952350294*^9}, {3.9264459888542967`*^9, 3.926446000681747*^9}, {
+   3.9264460419164104`*^9, 3.926446058039933*^9}, {3.92644612229888*^9, 
+   3.926446165708112*^9}, {3.926446256359846*^9, 3.9264462723066998`*^9}, {
+   3.926446496901983*^9, 3.926446516023267*^9}, {3.926446546801407*^9, 
+   3.9264467263772564`*^9}, {3.9264473411606617`*^9, 3.926447367344816*^9}, {
+   3.926447592721229*^9, 3.926447596325893*^9}, {3.9264476298881*^9, 
+   3.9264476447704983`*^9}, {3.926447835175014*^9, 3.9264478473345585`*^9}, {
+   3.926447879244673*^9, 3.926447887907383*^9}, {3.926447984881948*^9, 
+   3.92644799289233*^9}, {3.9264481274083185`*^9, 3.926448157833866*^9}, {
+   3.9264482018855*^9, 3.926448216419597*^9}, {3.926448272956339*^9, 
+   3.9264482842973423`*^9}, {3.926448316276155*^9, 3.926448332252077*^9}, 
+   3.926448489747186*^9, {3.926448538608526*^9, 3.926448558437897*^9}, {
+   3.926448703025615*^9, 3.926448757990865*^9}, {3.926448942902548*^9, 
+   3.926448948267523*^9}, {3.926449089394829*^9, 3.926449130682068*^9}, {
+   3.926449211134723*^9, 3.926449220036661*^9}, {3.9264495666005287`*^9, 
+   3.926449823127653*^9}, {3.926449897896391*^9, 3.926449921019764*^9}, {
+   3.926449959903114*^9, 3.926449963546674*^9}, {3.9264500049021587`*^9, 
+   3.9264500266693573`*^9}, {3.926450059774278*^9, 3.926450067910319*^9}, {
+   3.926450111049467*^9, 3.9264501627482567`*^9}, 3.926450324459163*^9, {
+   3.9264600978463287`*^9, 3.926460254758634*^9}, {3.926460325521906*^9, 
+   3.92646037302902*^9}, {3.926461790990338*^9, 3.9264617916967087`*^9}, {
+   3.9265004785270386`*^9, 3.926500490059925*^9}, {3.926500572377508*^9, 
+   3.926500704811022*^9}, {3.926501247573551*^9, 3.926501273789444*^9}, {
+   3.926501351472529*^9, 3.926501355829281*^9}, {3.926501409655937*^9, 
+   3.926501446809002*^9}, {3.926502422586437*^9, 3.926502488003029*^9}, {
+   3.92650253843935*^9, 3.92650254633244*^9}, {3.926502609113298*^9, 
+   3.9265026112332363`*^9}, {3.926502712965277*^9, 3.9265027235064983`*^9}, {
+   3.926502802127093*^9, 3.926502810189489*^9}, {3.9265029027991104`*^9, 
+   3.926502904202776*^9}, {3.926503019148077*^9, 3.9265031464386*^9}, {
+   3.9265031781260815`*^9, 3.926503199241897*^9}, {3.9265032373346024`*^9, 
+   3.92650323828298*^9}, {3.926503282036623*^9, 3.92650333697612*^9}, {
+   3.9265033718618774`*^9, 3.926503373076835*^9}, {3.926503414882698*^9, 
+   3.926503415095207*^9}, {3.926503489339823*^9, 3.926503533888077*^9}, {
+   3.926503656679457*^9, 3.9265038543184376`*^9}, {3.926503970512079*^9, 
+   3.926503994493826*^9}, {3.926504129095852*^9, 3.926504137641962*^9}, {
+   3.9265042541241302`*^9, 3.926504309119503*^9}, {3.926504362581288*^9, 
+   3.926504370844351*^9}, {3.926504657498503*^9, 3.9265047140008507`*^9}, {
+   3.926504783340761*^9, 3.926504917469269*^9}, {3.926505265516409*^9, 
+   3.926505294199171*^9}, {3.926505330237118*^9, 3.926505343806286*^9}, {
+   3.92650538122302*^9, 3.926505400680193*^9}, {3.926505462055126*^9, 
+   3.926505504331499*^9}, {3.926505848486296*^9, 3.926505864882988*^9}, {
+   3.926506081510868*^9, 3.9265060843536587`*^9}, {3.926506772699549*^9, 
+   3.926506805064745*^9}, {3.926508363491224*^9, 3.926508366895273*^9}, {
+   3.926514224894436*^9, 3.926514225912798*^9}, {3.92651920173757*^9, 
+   3.926519204606699*^9}, {3.92651925240436*^9, 3.926519303827156*^9}, 
+   3.9265199188476715`*^9, {3.9265204131270733`*^9, 3.926520415014591*^9}, {
+   3.926520987633351*^9, 3.926520988197512*^9}, {3.9265294407471046`*^9, 
+   3.9265294705957985`*^9}, {3.926529510301111*^9, 3.926529510391213*^9}, {
+   3.9265295408418636`*^9, 3.9265295627170377`*^9}, {3.926529699332016*^9, 
+   3.926529699498323*^9}, {3.9265298389951515`*^9, 3.926529847122607*^9}, {
+   3.9265299101308765`*^9, 3.926529943643473*^9}, {3.926530003855121*^9, 
+   3.926530027502888*^9}, {3.926530282030716*^9, 3.9265303104537354`*^9}, {
+   3.926530355879694*^9, 3.9265303751599483`*^9}, {3.926530689458887*^9, 
+   3.92653069383188*^9}, {3.926534849276329*^9, 3.926534855006861*^9}, {
+   3.926603839457088*^9, 3.926603875794647*^9}, {3.926604796420359*^9, 
+   3.926604934811689*^9}, {3.92703166037875*^9, 3.927031668703697*^9}, {
+   3.9271231492454576`*^9, 3.927123201563742*^9}, {3.927133727853256*^9, 
+   3.9271337553771067`*^9}, {3.927134085950648*^9, 3.927134087916523*^9}, {
+   3.927209701372643*^9, 3.927209728127472*^9}, {3.927209796471972*^9, 
+   3.927209801910221*^9}, {3.927215906713228*^9, 3.927215918402881*^9}, {
+   3.9272159644854774`*^9, 3.9272159647683144`*^9}, {3.927218969012018*^9, 
+   3.927218987695418*^9}, {3.927219368559048*^9, 3.927219368699404*^9}, {
+   3.927223072195513*^9, 3.927223073299696*^9}, {3.927223529836712*^9, 
+   3.9272235299678917`*^9}},
+ CellLabel->
+  "In[136]:=",ExpressionUUID->"3cf5b6c3-6bef-e84b-b256-4052afcc7fc3"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"LCS game instance (A, b): \"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"1", "1", "1", "0", "0", "0", "0", "0", "0"},
+       {"0", "0", "0", "1", "1", "1", "0", "0", "0"},
+       {"0", "0", "0", "0", "0", "0", "1", "1", "1"},
+       {"1", "0", "0", "1", "0", "0", "1", "0", "0"},
+       {"0", "1", "0", "0", "1", "0", "0", "1", "0"},
+       {"0", "0", "1", "0", "0", "1", "0", "0", "1"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]], "\[InvisibleSpace]", "\<\"x = \"\>", 
+   "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", 
+     TagBox[GridBox[{
+        {"0"},
+        {"1"},
+        {"1"},
+        {"0"},
+        {"0"},
+        {"1"}
+       },
+       GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+       GridBoxSpacings->{"Columns" -> {
+           Offset[0.27999999999999997`], {
+            Offset[0.5599999999999999]}, 
+           Offset[0.27999999999999997`]}, "Rows" -> {
+           Offset[0.2], {
+            Offset[0.4]}, 
+           Offset[0.2]}}],
+      Column], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["LCS game instance (A, b): ", 
+   MatrixForm[{{1, 1, 1, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 1, 1, 1, 0, 0, 0}, {0, 
+    0, 0, 0, 0, 0, 1, 1, 1}, {1, 0, 0, 1, 0, 0, 1, 0, 0}, {0, 1, 0, 0, 1, 0, 
+    0, 1, 0}, {0, 0, 1, 0, 0, 1, 0, 0, 1}}], "x = ", 
+   MatrixForm[{0, 1, 1, 0, 0, 1}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.9272231095618134`*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"7c3ae5f8-d438-6745-b156-33be66458e2a"],
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.9272231096243267`*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"43e73a21-e9a2-d146-8f05-66317461f0d7"],
+
+Cell[BoxData["\<\"* * *   NCPolyGroebner    * * *\"\>"], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.927223109639324*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"9f8df7b9-43d0-3d44-ac98-c826e7059ec5"],
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.9272231096423244`*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"b89c4087-4d43-6d42-9939-6b07aaf37dc9"],
+
+Cell[BoxData["\<\"* Monomial order: \"\>"], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.9272231096453247`*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"7911cda4-208a-7c4e-8db2-90cdd2463579"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> \"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{
+     SubscriptBox["x", "1"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "1"], ")"}], "*"], "<", 
+     SubscriptBox["x", "2"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "2"], ")"}], "*"], "<", 
+     SubscriptBox["x", "3"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "3"], ")"}], "*"], "<", 
+     SubscriptBox["x", "4"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "4"], ")"}], "*"], "<", 
+     SubscriptBox["x", "5"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "5"], ")"}], "*"], "<", 
+     SubscriptBox["x", "6"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "6"], ")"}], "*"], "<", 
+     SubscriptBox["x", "7"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "7"], ")"}], "*"], "<", 
+     SubscriptBox["x", "8"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "8"], ")"}], "*"], "<", 
+     SubscriptBox["x", "9"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "9"], ")"}], "*"], 
+     RowBox[{"\[LessLess]", " "}], "w"}],
+    DisplayForm]}],
+  SequenceForm["> ", 
+   DisplayForm[
+    RowBox[{
+      Subscript[$CellContext`x, 1], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 1]], "<", 
+      Subscript[$CellContext`x, 2], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 2]], "<", 
+      Subscript[$CellContext`x, 3], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 3]], "<", 
+      Subscript[$CellContext`x, 4], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 4]], "<", 
+      Subscript[$CellContext`x, 5], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 5]], "<", 
+      Subscript[$CellContext`x, 6], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 6]], "<", 
+      Subscript[$CellContext`x, 7], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 7]], "<", 
+      Subscript[$CellContext`x, 8], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 8]], "<", 
+      Subscript[$CellContext`x, 9], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 9]], "\[LessLess] ", $CellContext`w}]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.9272231096493244`*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"8a2c5e09-6783-4643-b45a-735603989902"],
+
+Cell[BoxData["\<\"* Reduce and normalize initial set\"\>"], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.927223109653324*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"a63ae18b-57a2-ec40-9922-a8907c9a2624"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> Initial set reduced to '\"\>", 
+   "\[InvisibleSpace]", "\<\"48\"\>", 
+   "\[InvisibleSpace]", "\<\"' out of '\"\>", 
+   "\[InvisibleSpace]", "\<\"70\"\>", 
+   "\[InvisibleSpace]", "\<\"' polynomials\"\>"}],
+  SequenceForm[
+  "> Initial set reduced to '", "48", "' out of '", "70", "' polynomials"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.927223109997528*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"9f091644-a210-704d-89a7-c375517bdb66"],
+
+Cell[BoxData["\<\"* Computing initial set of obstructions\"\>"], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.9272231100015297`*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"a8ec6cae-a0af-8148-961d-83e6e66d8b02"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "82", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "554", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 1, ", ", 82, " polys in the basis, ", 554, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.927223113345524*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"04879cf6-bcdc-3d46-84d1-d28f8bda89f3"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "100", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "872", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 2, ", ", 100, " polys in the basis, ", 872, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.927223119522299*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"149f6be5-f210-0a4c-9e53-84605b11b4ee"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "90", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "501", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 3, ", ", 90, " polys in the basis, ", 501, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.9272231263032055`*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"2078cd96-efa5-714c-85a7-b2ba83bd307f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "92", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "38", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 4, ", ", 92, " polys in the basis, ", 38, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.92722313417033*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"18cab07a-4438-ac40-b659-e909815a0b2c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"* Found Groebner basis with \"\>", 
+   "\[InvisibleSpace]", "\<\"92\"\>", 
+   "\[InvisibleSpace]", "\<\" polynomials\"\>"}],
+  SequenceForm["* Found Groebner basis with ", "92", " polynomials"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.927223134812504*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"48ed63a4-be2b-6445-9c45-fe9169f128e1"],
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.927223134815508*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"e4d565e0-582b-2341-88d7-a23d3c53808c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Groebner basis: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "1"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "2"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "3"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "3"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "4"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "4"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "5"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "5"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "6"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "6"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "7"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "8"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "9"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "9"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "1", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "3"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "4"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "3"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "2", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "5"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "3", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "4", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "5", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "3"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "6", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "4"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "3"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "7", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "5"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "8", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "9", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      SubscriptBox["x", "5"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{"w", "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}]}], "}"}]}],
+  SequenceForm["Groebner basis: ", {NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 1], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 3]] -> Subscript[$CellContext`x, 3], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 4]] -> Subscript[$CellContext`x, 4], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 5]] -> Subscript[$CellContext`x, 5], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 6]] -> Subscript[$CellContext`x, 6], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 7]] -> Subscript[$CellContext`x, 7], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 8]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 9]] -> Subscript[$CellContext`x, 9], 
+    Subscript[$CellContext`x, 1]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 3], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 3]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 4]] -> Subscript[$CellContext`x, 7], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 7]] -> Subscript[$CellContext`x, 4], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 3], 
+    Subscript[$CellContext`x, 2]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 3]] -> Subscript[$CellContext`x, 1], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 5]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 8]] -> Subscript[$CellContext`x, 5], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 1], 
+    Subscript[$CellContext`x, 3]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 7], 
+    Subscript[$CellContext`x, 4]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 7]] -> Subscript[$CellContext`x, 1], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 9]], Subscript[$CellContext`x, 5]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 8]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 3]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 1]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 2]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6]], Subscript[$CellContext`x, 6]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 4], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 2]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 3]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 2]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 4]] -> Subscript[$CellContext`x, 1], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1]], Subscript[$CellContext`x, 7]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 1]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 5], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 5]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 2]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6]], Subscript[$CellContext`x, 8]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 1]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 2]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 9]], Subscript[$CellContext`x, 9]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 2]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 9]] -> Subscript[$CellContext`x, 5], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6]] -> Subscript[$CellContext`x, 7], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], $CellContext`w -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]]}],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.9272231359588394`*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"a36893d7-9361-bd49-b176-1b96fb62af2a"],
+
+Cell[BoxData["\<\"LCS game has perfect quantum commuting-operator strategy.\"\
+\>"], "Print",
+ CellChangeTimes->{3.9272159205624447`*^9, 3.9272193914294662`*^9, 
+  3.927223135962841*^9},
+ CellLabel->
+  "During evaluation of \
+In[119]:=",ExpressionUUID->"1e7bfc55-838f-4d48-98f7-77043734abd0"]
+}, Open  ]],
+
+Cell[BoxData[
+ TemplateBox[{
+  "NC", "Directory", "\"You are using a paclet version of NCAlgebra.\"", 2, 
+   136, 24, 29116859237225200324, "Local", "NC`NC"},
+  "MessageTemplate2"]], "Message", "MSG",
+ CellChangeTimes->{3.927223109520458*^9, 3.9272235313118668`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"16310c50-90ba-7041-a7e2-4914368bb84a"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "NCAlgebra", "SmallCapSymbolsNonCommutative", 
+   "\"All lower cap single letter symbols (e.g. a,b,c,...) were set as \
+noncommutative.\"", 2, 137, 25, 29116859237225200324, "Local", 
+   "NCAlgebra`NCAlgebra"},
+  "MessageTemplate2"]], "Message", "MSG",
+ CellChangeTimes->{3.927223109520458*^9, 3.927223531328785*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"29ab636a-e499-2341-a68c-a41c8d6ec455"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"LCS game instance (A, b): \"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"1", "1", "1", "0", "0", "0", "0", "0", "0"},
+       {"0", "0", "0", "1", "1", "1", "0", "0", "0"},
+       {"0", "0", "0", "0", "0", "0", "1", "1", "1"},
+       {"1", "0", "0", "1", "0", "0", "1", "0", "0"},
+       {"0", "1", "0", "0", "1", "0", "0", "1", "0"},
+       {"0", "0", "1", "0", "0", "1", "0", "0", "1"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]], "\[InvisibleSpace]", "\<\"x = \"\>", 
+   "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", 
+     TagBox[GridBox[{
+        {"0"},
+        {"1"},
+        {"0"},
+        {"0"},
+        {"0"},
+        {"1"}
+       },
+       GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+       GridBoxSpacings->{"Columns" -> {
+           Offset[0.27999999999999997`], {
+            Offset[0.5599999999999999]}, 
+           Offset[0.27999999999999997`]}, "Rows" -> {
+           Offset[0.2], {
+            Offset[0.4]}, 
+           Offset[0.2]}}],
+      Column], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["LCS game instance (A, b): ", 
+   MatrixForm[{{1, 1, 1, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 1, 1, 1, 0, 0, 0}, {0, 
+    0, 0, 0, 0, 0, 1, 1, 1}, {1, 0, 0, 1, 0, 0, 1, 0, 0}, {0, 1, 0, 0, 1, 0, 
+    0, 1, 0}, {0, 0, 1, 0, 0, 1, 0, 0, 1}}], "x = ", 
+   MatrixForm[{0, 1, 0, 0, 0, 1}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272235313363113`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"6db030cb-e040-d045-ad62-d22d32fd1c03"],
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.9272235313827133`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"b51f0dd0-0ad2-f146-805b-11330514450f"],
+
+Cell[BoxData["\<\"* * *   NCPolyGroebner    * * *\"\>"], "Print",
+ CellChangeTimes->{3.927223531406311*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"da758615-9e92-8e4e-b2e9-7cca920f121c"],
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.9272235314093094`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"e14bf2a1-50bf-d948-8452-119b68c27dee"],
+
+Cell[BoxData["\<\"* Monomial order: \"\>"], "Print",
+ CellChangeTimes->{3.927223531412344*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"c27b6303-43e4-a347-9d3d-29a482ae0609"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> \"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{
+     SubscriptBox["x", "1"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "1"], ")"}], "*"], "<", 
+     SubscriptBox["x", "2"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "2"], ")"}], "*"], "<", 
+     SubscriptBox["x", "3"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "3"], ")"}], "*"], "<", 
+     SubscriptBox["x", "4"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "4"], ")"}], "*"], "<", 
+     SubscriptBox["x", "5"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "5"], ")"}], "*"], "<", 
+     SubscriptBox["x", "6"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "6"], ")"}], "*"], "<", 
+     SubscriptBox["x", "7"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "7"], ")"}], "*"], "<", 
+     SubscriptBox["x", "8"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "8"], ")"}], "*"], "<", 
+     SubscriptBox["x", "9"], "<", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       SubscriptBox["x", "9"], ")"}], "*"], 
+     RowBox[{"\[LessLess]", " "}], "w"}],
+    DisplayForm]}],
+  SequenceForm["> ", 
+   DisplayForm[
+    RowBox[{
+      Subscript[$CellContext`x, 1], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 1]], "<", 
+      Subscript[$CellContext`x, 2], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 2]], "<", 
+      Subscript[$CellContext`x, 3], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 3]], "<", 
+      Subscript[$CellContext`x, 4], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 4]], "<", 
+      Subscript[$CellContext`x, 5], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 5]], "<", 
+      Subscript[$CellContext`x, 6], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 6]], "<", 
+      Subscript[$CellContext`x, 7], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 7]], "<", 
+      Subscript[$CellContext`x, 8], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 8]], "<", 
+      Subscript[$CellContext`x, 9], "<", 
+      NonCommutativeMultiply`aj[
+       Subscript[$CellContext`x, 9]], "\[LessLess] ", $CellContext`w}]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.927223531415573*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"4940f6ee-18f2-4e4a-8e5e-883a2c177ed1"],
+
+Cell[BoxData["\<\"* Reduce and normalize initial set\"\>"], "Print",
+ CellChangeTimes->{3.9272235314186916`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"5d357c0e-51ae-5b49-9786-22315f9c6057"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> Initial set reduced to '\"\>", 
+   "\[InvisibleSpace]", "\<\"48\"\>", 
+   "\[InvisibleSpace]", "\<\"' out of '\"\>", 
+   "\[InvisibleSpace]", "\<\"70\"\>", 
+   "\[InvisibleSpace]", "\<\"' polynomials\"\>"}],
+  SequenceForm[
+  "> Initial set reduced to '", "48", "' out of '", "70", "' polynomials"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272235317799416`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"7558b1dd-95f5-174e-bd5c-8705118802d4"],
+
+Cell[BoxData["\<\"* Computing initial set of obstructions\"\>"], "Print",
+ CellChangeTimes->{3.9272235317839413`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"19c1ecce-d4a2-8e43-86f4-ba32a63f6274"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "77", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "475", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 1, ", ", 77, " polys in the basis, ", 475, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272235349112415`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"ba697baf-2138-5340-b20e-6d201da886f8"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "84", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "530", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 2, ", ", 84, " polys in the basis, ", 530, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272235406827927`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"3a6aca2f-094f-4c4c-bf1f-65b28cef46ae"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "86", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "319", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 3, ", ", 86, " polys in the basis, ", 319, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.927223545614689*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"b8b6ada6-ad5c-a94a-8aac-60f6a4fc7faa"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"* Found Groebner basis with \"\>", 
+   "\[InvisibleSpace]", "\<\"86\"\>", 
+   "\[InvisibleSpace]", "\<\" polynomials\"\>"}],
+  SequenceForm["* Found Groebner basis with ", "86", " polynomials"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272235494558983`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"d6647bd7-b07b-1a44-b53f-2e2f1dc984b1"],
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.9272235494587383`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"ff49653d-65ad-3f41-b3ea-efeb431d9c72"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Groebner basis: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "1"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "2"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "3"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "3"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "4"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "4"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "5"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "5"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "6"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "6"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "7"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "8"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "9"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "9"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "1", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "3"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "4"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "3"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "2", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "5"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "3", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "4", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "5", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "6", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "4"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "7", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "9"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "5"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "9"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "8", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}], ",", 
+     RowBox[{
+      SubsuperscriptBox["x", "9", "2"], "\[Rule]", "1"}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"]}]}], ",", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}]}], ",", 
+     RowBox[{"w", "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}]}], "}"}]}],
+  SequenceForm["Groebner basis: ", {NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 1], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 3]] -> Subscript[$CellContext`x, 3], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 4]] -> Subscript[$CellContext`x, 4], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 5]] -> Subscript[$CellContext`x, 5], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 6]] -> Subscript[$CellContext`x, 6], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 7]] -> Subscript[$CellContext`x, 7], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 8]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply`aj[
+      Subscript[$CellContext`x, 9]] -> Subscript[$CellContext`x, 9], 
+    Subscript[$CellContext`x, 1]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 3], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 3]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 4]] -> Subscript[$CellContext`x, 7], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 7]] -> Subscript[$CellContext`x, 4], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 3], 
+    Subscript[$CellContext`x, 2]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 3]] -> Subscript[$CellContext`x, 1], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 5]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 8]] -> Subscript[$CellContext`x, 5], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 1], 
+    Subscript[$CellContext`x, 3]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 7], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 2]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]], Subscript[$CellContext`x, 4]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 7]] -> Subscript[$CellContext`x, 1], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 1]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 9]], Subscript[$CellContext`x, 5]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 8]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 1]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 2]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6]], Subscript[$CellContext`x, 6]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 1]] -> Subscript[$CellContext`x, 4], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 2]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 4]] -> Subscript[$CellContext`x, 1], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 7]], Subscript[$CellContext`x, 7]^2 -> 1, 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 8]] -> Subscript[$CellContext`x, 9], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 7], 
+      Subscript[$CellContext`x, 9]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 1]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 2]] -> Subscript[$CellContext`x, 5], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 5]] -> Subscript[$CellContext`x, 2], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 7]] -> Subscript[$CellContext`x, 9], 
+    Subscript[$CellContext`x, 8]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 8], 
+      Subscript[$CellContext`x, 9]] -> Subscript[$CellContext`x, 7], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 1]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 2]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 3]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 4]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 5]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 7]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 6]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 7]] -> Subscript[$CellContext`x, 8], 
+    NonCommutativeMultiply[
+      Subscript[$CellContext`x, 9], 
+      Subscript[$CellContext`x, 8]] -> Subscript[$CellContext`x, 7], 
+    Subscript[$CellContext`x, 9]^2 -> 1, NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 4], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 1], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 8]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 7]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 8]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6]], NonCommutativeMultiply[
+      Subscript[$CellContext`x, 5], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]] -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 2], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 7]], $CellContext`w -> NonCommutativeMultiply[
+      Subscript[$CellContext`x, 3], 
+      Subscript[$CellContext`x, 6], 
+      Subscript[$CellContext`x, 9]]}],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9272235504862976`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"f85d6921-b68f-064c-a7f1-6d7b99a59e5f"],
+
+Cell[BoxData["\<\"LCS game has perfect quantum commuting-operator strategy.\"\
+\>"], "Print",
+ CellChangeTimes->{3.9272235504902973`*^9},
+ CellLabel->
+  "During evaluation of \
+In[136]:=",ExpressionUUID->"e0d44b64-72f0-f04e-afe7-2f68eb4a298e"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Print",
+ GeneratedCell->False,
+ CellAutoOverwrite->False,
+ CellChangeTimes->{
+  3.927123202507221*^9, 3.9271337575953064`*^9, 3.9271340889230766`*^9, 
+   3.9272098389292774`*^9, {3.9272098893898163`*^9, 
+   3.927209900034151*^9}},ExpressionUUID->"96420668-2d04-cf41-aa01-\
+b5a53e5beb8e"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.9272159690506744`*^9, 
+  3.9272159692727337`*^9}},ExpressionUUID->"b7a7a4dc-2e1d-164e-bc7a-\
+2bdb8ee8fb19"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"gb", " ", "//", " ", "Column"}]], "Input",
+ CellChangeTimes->{{3.927218792558481*^9, 3.9272187926697674`*^9}, {
+  3.9272240327425632`*^9, 3.9272240369822884`*^9}},
+ CellLabel->
+  "In[151]:=",ExpressionUUID->"2500869c-ea13-f940-8dea-13975d68caf6"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "1"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "1"]}]},
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "2"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "2"]}]},
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "3"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "3"]}]},
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "4"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "4"]}]},
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "5"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "5"]}]},
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "6"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "6"]}]},
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "7"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "7"]}]},
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "8"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "8"]}]},
+    {
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        SubscriptBox["x", "9"], ")"}], "*"], "\[Rule]", 
+      SubscriptBox["x", "9"]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "1", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "3"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "4"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "3"]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "2", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "5"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "3", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "4", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "5", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "6", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      SubscriptBox["x", "4"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      SubscriptBox["x", "1"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "7", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "9"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "7"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      SubscriptBox["x", "5"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      SubscriptBox["x", "2"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "9"]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "8", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "8"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "1"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "2"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "3"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "4"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "8"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "5"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "7"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "6"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      SubscriptBox["x", "8"]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "9"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      SubscriptBox["x", "7"]}]},
+    {
+     RowBox[{
+      SubsuperscriptBox["x", "9", "2"], "\[Rule]", "1"}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "4"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "1"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "8"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"]}]}]},
+    {
+     RowBox[{
+      RowBox[{
+       SubscriptBox["x", "5"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "2"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "7"]}]}]},
+    {
+     RowBox[{"w", "\[Rule]", 
+      RowBox[{
+       SubscriptBox["x", "3"], "**", 
+       SubscriptBox["x", "6"], "**", 
+       SubscriptBox["x", "9"]}]}]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Output",
+ CellChangeTimes->{3.927223553670946*^9, 3.9272240375014515`*^9},
+ CellLabel->
+  "Out[151]=",ExpressionUUID->"dfb22dd1-f328-cd42-ac9d-2f173ecee995"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Print", "[", "gb", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"For", "[", 
+  RowBox[{
+   RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+   RowBox[{"i", " ", "<=", " ", 
+    RowBox[{"Length", "[", "var", "]"}]}], ",", " ", 
+   RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"j", " ", "=", " ", 
+      RowBox[{"i", " ", "+", " ", "1"}]}], ",", " ", 
+     RowBox[{"j", " ", "<=", " ", 
+      RowBox[{"Length", "[", "var", "]"}]}], ",", " ", 
+     RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"expr", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"commutator", "[", 
+         RowBox[{
+          RowBox[{"var", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], ",", " ", 
+          RowBox[{"var", "[", 
+           RowBox[{"[", "j", "]"}], "]"}]}], "]"}], " ", "/.", " ", "gb"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"expr", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], " ", "==", " ", "0"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Print", "[", 
+         RowBox[{
+         "\"\<x_\>\"", ",", " ", "i", ",", " ", "\"\<, x_\>\"", ",", " ", "j",
+           " ", ",", " ", "\"\< commutativity: \>\"", ",", " ", 
+          "\"\<commuting\>\""}], "]"}], ",", ",", "\[IndentingNewLine]", 
+        RowBox[{"Print", "[", 
+         RowBox[{
+         "\"\<x_\>\"", ",", " ", "i", ",", " ", "\"\<, x_\>\"", ",", " ", "j",
+           " ", ",", " ", "\"\< commutativity: \>\"", ",", " ", 
+          "\"\<non-commuting\>\""}], "]"}]}], "\[IndentingNewLine]", "]"}], 
+      ";"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.927210020474081*^9, 3.9272100278047237`*^9}, {
+   3.927210069204027*^9, 3.927210162400093*^9}, {3.927215842266327*^9, 
+   3.927215850590447*^9}, {3.927218780680575*^9, 3.927219012917982*^9}, {
+   3.9272190551137085`*^9, 3.927219072933203*^9}, {3.927219111603615*^9, 
+   3.927219112147684*^9}, {3.9272191524326577`*^9, 3.9272193124884586`*^9}, {
+   3.9272193445735226`*^9, 3.927219357396303*^9}, 3.927219557475437*^9, {
+   3.9272231810709*^9, 3.927223185483591*^9}},
+ CellLabel->
+  "In[149]:=",ExpressionUUID->"757435c1-29ff-6d49-8401-4c245ac649c5"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "1"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "1"]}], ",", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "2"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "2"]}], ",", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "3"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "3"]}], ",", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "4"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "4"]}], ",", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "5"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "5"]}], ",", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "6"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "6"]}], ",", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "7"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "7"]}], ",", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "8"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "8"]}], ",", 
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"(", 
+      SubscriptBox["x", "9"], ")"}], "*"], "\[Rule]", 
+    SubscriptBox["x", "9"]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "1", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "2"]}], "\[Rule]", 
+    SubscriptBox["x", "3"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "3"]}], "\[Rule]", 
+    SubscriptBox["x", "2"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "4"]}], "\[Rule]", 
+    SubscriptBox["x", "7"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    SubscriptBox["x", "4"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "1"]}], "\[Rule]", 
+    SubscriptBox["x", "3"]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "2", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "3"]}], "\[Rule]", 
+    SubscriptBox["x", "1"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "5"]}], "\[Rule]", 
+    SubscriptBox["x", "8"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    SubscriptBox["x", "5"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "1"]}], "\[Rule]", 
+    SubscriptBox["x", "2"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "2"]}], "\[Rule]", 
+    SubscriptBox["x", "1"]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "3", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "4"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "7"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "5"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "8"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "4"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "5"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "1"]}], "\[Rule]", 
+    SubscriptBox["x", "7"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "2"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "4"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "3"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "7"]}]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "4", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "5"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    SubscriptBox["x", "1"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "9"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "8"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "1"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "5"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "2"]}], "\[Rule]", 
+    SubscriptBox["x", "8"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "3"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "8"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "4"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "5", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    SubscriptBox["x", "2"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "9"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "7"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "1"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "2"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "3"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "4"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "5"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "6", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "7"], "**", 
+     SubscriptBox["x", "1"]}], "\[Rule]", 
+    SubscriptBox["x", "4"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "7"], "**", 
+     SubscriptBox["x", "2"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "7"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "7"], "**", 
+     SubscriptBox["x", "3"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "4"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "7"], "**", 
+     SubscriptBox["x", "4"]}], "\[Rule]", 
+    SubscriptBox["x", "1"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "7"], "**", 
+     SubscriptBox["x", "5"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "7"], "**", 
+     SubscriptBox["x", "6"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "7"]}]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "7", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "7"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    SubscriptBox["x", "9"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "7"], "**", 
+     SubscriptBox["x", "9"]}], "\[Rule]", 
+    SubscriptBox["x", "8"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "8"], "**", 
+     SubscriptBox["x", "1"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "8"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "8"], "**", 
+     SubscriptBox["x", "2"]}], "\[Rule]", 
+    SubscriptBox["x", "5"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "8"], "**", 
+     SubscriptBox["x", "3"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "5"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "8"], "**", 
+     SubscriptBox["x", "4"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "8"], "**", 
+     SubscriptBox["x", "5"]}], "\[Rule]", 
+    SubscriptBox["x", "2"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "8"], "**", 
+     SubscriptBox["x", "6"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "8"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "8"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    SubscriptBox["x", "9"]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "8", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "8"], "**", 
+     SubscriptBox["x", "9"]}], "\[Rule]", 
+    SubscriptBox["x", "7"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "9"], "**", 
+     SubscriptBox["x", "1"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "9"], "**", 
+     SubscriptBox["x", "2"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "9"], "**", 
+     SubscriptBox["x", "3"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "9"], "**", 
+     SubscriptBox["x", "4"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "8"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "9"], "**", 
+     SubscriptBox["x", "5"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "7"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "9"], "**", 
+     SubscriptBox["x", "6"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "9"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    SubscriptBox["x", "8"]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "9"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    SubscriptBox["x", "7"]}], ",", 
+   RowBox[{
+    SubsuperscriptBox["x", "9", "2"], "\[Rule]", "1"}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "4"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "9"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "1"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "8"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "7"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "9"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "8"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "6"]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["x", "5"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "9"]}], "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "2"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "7"]}]}], ",", 
+   RowBox[{"w", "\[Rule]", 
+    RowBox[{
+     SubscriptBox["x", "3"], "**", 
+     SubscriptBox["x", "6"], "**", 
+     SubscriptBox["x", "9"]}]}]}], "}"}]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562259487*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"4fe77a53-f553-8f49-a025-c7a0062de886"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 1, ", x_", 2, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562264488*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"5689a4bf-9254-0742-a4c6-eb4c341f093d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 1, ", x_", 3, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562270729*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"bf113d1b-199c-0e4a-af77-db50be17224f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 1, ", x_", 4, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235622758465`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"44744ac0-3573-d64e-b54f-467620a3a70f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "5", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 1, ", x_", 5, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235622774067`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"24ca13d2-86eb-3847-bdd4-6c39b0b0c357"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "6", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 1, ", x_", 6, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562280716*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"b7bee97d-d082-9a49-b18f-a482fd91bd70"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 1, ", x_", 7, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562282423*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"f863f653-90df-8a45-9a07-ee866f6b1aec"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "8", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 1, ", x_", 8, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235622853107`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"117684a8-b8df-7348-abdf-5841a534eb84"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 1, ", x_", 9, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235622878532`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"fad26d3e-7f09-704f-ac8a-58fd98f05450"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 2, ", x_", 3, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562295265*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"7d55b96a-43dd-9a4b-9969-f848d15f1681"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 2, ", x_", 4, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235622982807`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"a26c614c-60ed-aa4d-992e-cf8efffd3316"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "5", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 2, ", x_", 5, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623015633`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"62c1344d-392a-ff45-a911-301de43403a7"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "6", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 2, ", x_", 6, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623059387`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"f8e9e8e0-4d78-cb4b-a91d-fe999f910eb4"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 2, ", x_", 7, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623079395`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"9c473859-4a7f-cf4c-bccc-23dd6e755d17"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "8", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 2, ", x_", 8, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.92722356231094*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"a8b59f3b-ad01-c547-a417-8b118193e4f3"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 2, ", x_", 9, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562313938*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"52328d11-d156-3b4b-8169-8dc2ff851fec"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 3, ", x_", 4, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623169403`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"598f768c-480e-714b-83b6-d35c9cbb253f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "5", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 3, ", x_", 5, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562318943*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"8da8b778-62f1-d144-ae1e-88d423341fa0"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "6", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 3, ", x_", 6, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562322529*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"90db351a-1a1e-714d-b32c-474d954720c3"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 3, ", x_", 7, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562325527*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"fceddd69-f05e-294d-9467-61bba0c01500"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "8", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 3, ", x_", 8, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623275623`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"c02016e4-ef3b-4e48-838c-79d1e106e71e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 3, ", x_", 9, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623375416`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"fee43b99-328f-5c4e-93be-89c34d1b88ca"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "5", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 4, ", x_", 5, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623405437`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"fcf48dd3-1a51-5640-ac74-5e056f40357b"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "6", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 4, ", x_", 6, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562343544*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"fec0e3c0-65bc-9746-9dc5-1bd350236519"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 4, ", x_", 7, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562345545*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"96fc3c7c-3ecb-ac41-aeda-99940fc4e795"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "8", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 4, ", x_", 8, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562348543*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"96bed07f-a7c7-7140-8d43-640f2b91bee1"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "4", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 4, ", x_", 9, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623578167`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"8f10ec26-9a98-9b4e-967d-178314180edd"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "5", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "6", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 5, ", x_", 6, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623608093`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"7b7f8bc3-644d-2449-a71f-fbacfde8cefe"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "5", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 5, ", x_", 7, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623633194`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"db486e2f-c81a-234d-bfc4-f499954f5b2e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "5", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "8", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 5, ", x_", 8, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623653183`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"5410c36f-ef63-1b46-9f16-b500a5168e63"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "5", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 5, ", x_", 9, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562368017*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"5e15ec6d-31ca-d544-94c2-e98ad472f504"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "6", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 6, ", x_", 7, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623700237`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"37eb10a9-d7b5-b54c-b5a7-14c04fc3181f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "6", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "8", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 6, ", x_", 8, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562373022*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"690556e3-e5f3-6d47-b92e-c1ca33b588f5"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "6", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 6, ", x_", 9, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562375532*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"f52339f9-821e-b244-a07a-c1cdad88ae3a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "8", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 7, ", x_", 8, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623780365`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"60150766-432a-2145-8471-33f3cf09de8a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 7, ", x_", 9, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.9272235623810444`*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"1dddf8f4-8171-8c43-b290-e790ea46719c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"x_\"\>", "\[InvisibleSpace]", "8", 
+   "\[InvisibleSpace]", "\<\", x_\"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" commutativity: \"\>", 
+   "\[InvisibleSpace]", "\<\"commuting\"\>"}],
+  SequenceForm["x_", 8, ", x_", 9, " commutativity: ", "commuting"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.927219303401516*^9, 3.927219313647478*^9}, 
+   3.927219359589447*^9, 3.9272194529044456`*^9, 3.92721955909898*^9, {
+   3.9272231464820366`*^9, 3.9272231858995037`*^9}, 3.927223562383045*^9},
+ CellLabel->
+  "During evaluation of \
+In[149]:=",ExpressionUUID->"d9b9e6ae-e9af-e545-9231-899de0cbc6b7"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1269, 726.5},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification:>0.7 Inherited,
+FrontEndVersion->"14.0 for Microsoft Windows (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"c3299f1c-419d-5f43-8637-2ad6afa19df9"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 23079, 490, 1446, "Input",ExpressionUUID->"3cf5b6c3-6bef-e84b-b256-4052afcc7fc3"],
+Cell[CellGroupData[{
+Cell[23684, 516, 2057, 54, 69, "Print",ExpressionUUID->"7c3ae5f8-d438-6745-b156-33be66458e2a"],
+Cell[25744, 572, 266, 5, 17, "Print",ExpressionUUID->"43e73a21-e9a2-d146-8f05-66317461f0d7"],
+Cell[26013, 579, 264, 5, 17, "Print",ExpressionUUID->"9f8df7b9-43d0-3d44-ac98-c826e7059ec5"],
+Cell[26280, 586, 266, 5, 17, "Print",ExpressionUUID->"b89c4087-4d43-6d42-9939-6b07aaf37dc9"],
+Cell[26549, 593, 253, 5, 17, "Print",ExpressionUUID->"7911cda4-208a-7c4e-8db2-90cdd2463579"],
+Cell[26805, 600, 2677, 78, 17, "Print",ExpressionUUID->"8a2c5e09-6783-4643-b45a-735603989902"],
+Cell[29485, 680, 267, 5, 17, "Print",ExpressionUUID->"a63ae18b-57a2-ec40-9922-a8907c9a2624"],
+Cell[29755, 687, 579, 14, 17, "Print",ExpressionUUID->"9f091644-a210-704d-89a7-c375517bdb66"],
+Cell[30337, 703, 274, 5, 17, "Print",ExpressionUUID->"a8ec6cae-a0af-8148-961d-83e6e66d8b02"],
+Cell[30614, 710, 637, 14, 17, "Print",ExpressionUUID->"04879cf6-bcdc-3d46-84d1-d28f8bda89f3"],
+Cell[31254, 726, 639, 14, 17, "Print",ExpressionUUID->"149f6be5-f210-0a4c-9e53-84605b11b4ee"],
+Cell[31896, 742, 639, 14, 17, "Print",ExpressionUUID->"2078cd96-efa5-714c-85a7-b2ba83bd307f"],
+Cell[32538, 758, 634, 14, 17, "Print",ExpressionUUID->"18cab07a-4438-ac40-b659-e909815a0b2c"],
+Cell[33175, 774, 472, 11, 17, "Print",ExpressionUUID->"48ed63a4-be2b-6445-9c45-fe9169f128e1"],
+Cell[33650, 787, 264, 5, 17, "Print",ExpressionUUID->"e4d565e0-582b-2341-88d7-a23d3c53808c"],
+Cell[33917, 794, 32692, 889, 83, "Print",ExpressionUUID->"a36893d7-9361-bd49-b176-1b96fb62af2a"],
+Cell[66612, 1685, 292, 6, 17, "Print",ExpressionUUID->"1e7bfc55-838f-4d48-98f7-77043734abd0"]
+}, Open  ]],
+Cell[66919, 1694, 372, 8, 20, "Message",ExpressionUUID->"16310c50-90ba-7041-a7e2-4914368bb84a"],
+Cell[67294, 1704, 453, 10, 20, "Message",ExpressionUUID->"29ab636a-e499-2341-a68c-a41c8d6ec455"],
+Cell[CellGroupData[{
+Cell[67772, 1718, 2006, 53, 69, "Print",ExpressionUUID->"6db030cb-e040-d045-ad62-d22d32fd1c03"],
+Cell[69781, 1773, 215, 4, 17, "Print",ExpressionUUID->"b51f0dd0-0ad2-f146-805b-11330514450f"],
+Cell[69999, 1779, 213, 4, 17, "Print",ExpressionUUID->"da758615-9e92-8e4e-b2e9-7cca920f121c"],
+Cell[70215, 1785, 215, 4, 17, "Print",ExpressionUUID->"e14bf2a1-50bf-d948-8452-119b68c27dee"],
+Cell[70433, 1791, 200, 4, 17, "Print",ExpressionUUID->"c27b6303-43e4-a347-9d3d-29a482ae0609"],
+Cell[70636, 1797, 2624, 77, 17, "Print",ExpressionUUID->"4940f6ee-18f2-4e4a-8e5e-883a2c177ed1"],
+Cell[73263, 1876, 218, 4, 17, "Print",ExpressionUUID->"5d357c0e-51ae-5b49-9786-22315f9c6057"],
+Cell[73484, 1882, 530, 13, 17, "Print",ExpressionUUID->"7558b1dd-95f5-174e-bd5c-8705118802d4"],
+Cell[74017, 1897, 223, 4, 17, "Print",ExpressionUUID->"19c1ecce-d4a2-8e43-86f4-ba32a63f6274"],
+Cell[74243, 1903, 588, 13, 17, "Print",ExpressionUUID->"ba697baf-2138-5340-b20e-6d201da886f8"],
+Cell[74834, 1918, 588, 13, 17, "Print",ExpressionUUID->"3a6aca2f-094f-4c4c-bf1f-65b28cef46ae"],
+Cell[75425, 1933, 586, 13, 17, "Print",ExpressionUUID->"b8b6ada6-ad5c-a94a-8aac-60f6a4fc7faa"],
+Cell[76014, 1948, 423, 10, 17, "Print",ExpressionUUID->"d6647bd7-b07b-1a44-b53f-2e2f1dc984b1"],
+Cell[76440, 1960, 215, 4, 17, "Print",ExpressionUUID->"ff49653d-65ad-3f41-b3ea-efeb431d9c72"],
+Cell[76658, 1966, 29405, 800, 83, "Print",ExpressionUUID->"f85d6921-b68f-064c-a7f1-6d7b99a59e5f"],
+Cell[106066, 2768, 243, 5, 17, "Print",ExpressionUUID->"e0d44b64-72f0-f04e-afe7-2f68eb4a298e"],
+Cell[106312, 2775, 325, 7, 28, "Print",ExpressionUUID->"96420668-2d04-cf41-aa01-b5a53e5beb8e"]
+}, Open  ]]
+}, Open  ]],
+Cell[106664, 2786, 156, 3, 21, "Input",ExpressionUUID->"b7a7a4dc-2e1d-164e-bc7a-2bdb8ee8fb19"],
+Cell[CellGroupData[{
+Cell[106845, 2793, 270, 5, 21, "Input",ExpressionUUID->"2500869c-ea13-f940-8dea-13975d68caf6"],
+Cell[107118, 2800, 15746, 600, 1050, "Output",ExpressionUUID->"dfb22dd1-f328-cd42-ac9d-2f173ecee995"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[122901, 3405, 2329, 52, 140, "Input",ExpressionUUID->"757435c1-29ff-6d49-8401-4c245ac649c5"],
+Cell[CellGroupData[{
+Cell[125255, 3461, 14659, 513, 83, "Print",ExpressionUUID->"4fe77a53-f553-8f49-a025-c7a0062de886"],
+Cell[139917, 3976, 669, 13, 17, "Print",ExpressionUUID->"5689a4bf-9254-0742-a4c6-eb4c341f093d"],
+Cell[140589, 3991, 669, 13, 17, "Print",ExpressionUUID->"bf113d1b-199c-0e4a-af77-db50be17224f"],
+Cell[141261, 4006, 671, 13, 17, "Print",ExpressionUUID->"44744ac0-3573-d64e-b54f-467620a3a70f"],
+Cell[141935, 4021, 671, 13, 17, "Print",ExpressionUUID->"24ca13d2-86eb-3847-bdd4-6c39b0b0c357"],
+Cell[142609, 4036, 669, 13, 17, "Print",ExpressionUUID->"b7bee97d-d082-9a49-b18f-a482fd91bd70"],
+Cell[143281, 4051, 669, 13, 17, "Print",ExpressionUUID->"f863f653-90df-8a45-9a07-ee866f6b1aec"],
+Cell[143953, 4066, 671, 13, 17, "Print",ExpressionUUID->"117684a8-b8df-7348-abdf-5841a534eb84"],
+Cell[144627, 4081, 671, 13, 17, "Print",ExpressionUUID->"fad26d3e-7f09-704f-ac8a-58fd98f05450"],
+Cell[145301, 4096, 669, 13, 17, "Print",ExpressionUUID->"7d55b96a-43dd-9a4b-9969-f848d15f1681"],
+Cell[145973, 4111, 671, 13, 17, "Print",ExpressionUUID->"a26c614c-60ed-aa4d-992e-cf8efffd3316"],
+Cell[146647, 4126, 671, 13, 17, "Print",ExpressionUUID->"62c1344d-392a-ff45-a911-301de43403a7"],
+Cell[147321, 4141, 671, 13, 17, "Print",ExpressionUUID->"f8e9e8e0-4d78-cb4b-a91d-fe999f910eb4"],
+Cell[147995, 4156, 671, 13, 17, "Print",ExpressionUUID->"9c473859-4a7f-cf4c-bccc-23dd6e755d17"],
+Cell[148669, 4171, 668, 13, 17, "Print",ExpressionUUID->"a8b59f3b-ad01-c547-a417-8b118193e4f3"],
+Cell[149340, 4186, 669, 13, 17, "Print",ExpressionUUID->"52328d11-d156-3b4b-8169-8dc2ff851fec"],
+Cell[150012, 4201, 671, 13, 17, "Print",ExpressionUUID->"598f768c-480e-714b-83b6-d35c9cbb253f"],
+Cell[150686, 4216, 669, 13, 17, "Print",ExpressionUUID->"8da8b778-62f1-d144-ae1e-88d423341fa0"],
+Cell[151358, 4231, 669, 13, 17, "Print",ExpressionUUID->"90db351a-1a1e-714d-b32c-474d954720c3"],
+Cell[152030, 4246, 669, 13, 17, "Print",ExpressionUUID->"fceddd69-f05e-294d-9467-61bba0c01500"],
+Cell[152702, 4261, 671, 13, 17, "Print",ExpressionUUID->"c02016e4-ef3b-4e48-838c-79d1e106e71e"],
+Cell[153376, 4276, 671, 13, 17, "Print",ExpressionUUID->"fee43b99-328f-5c4e-93be-89c34d1b88ca"],
+Cell[154050, 4291, 671, 13, 17, "Print",ExpressionUUID->"fcf48dd3-1a51-5640-ac74-5e056f40357b"],
+Cell[154724, 4306, 669, 13, 17, "Print",ExpressionUUID->"fec0e3c0-65bc-9746-9dc5-1bd350236519"],
+Cell[155396, 4321, 669, 13, 17, "Print",ExpressionUUID->"96fc3c7c-3ecb-ac41-aeda-99940fc4e795"],
+Cell[156068, 4336, 669, 13, 17, "Print",ExpressionUUID->"96bed07f-a7c7-7140-8d43-640f2b91bee1"],
+Cell[156740, 4351, 671, 13, 17, "Print",ExpressionUUID->"8f10ec26-9a98-9b4e-967d-178314180edd"],
+Cell[157414, 4366, 671, 13, 17, "Print",ExpressionUUID->"7b7f8bc3-644d-2449-a71f-fbacfde8cefe"],
+Cell[158088, 4381, 671, 13, 17, "Print",ExpressionUUID->"db486e2f-c81a-234d-bfc4-f499954f5b2e"],
+Cell[158762, 4396, 671, 13, 17, "Print",ExpressionUUID->"5410c36f-ef63-1b46-9f16-b500a5168e63"],
+Cell[159436, 4411, 669, 13, 17, "Print",ExpressionUUID->"5e15ec6d-31ca-d544-94c2-e98ad472f504"],
+Cell[160108, 4426, 671, 13, 17, "Print",ExpressionUUID->"37eb10a9-d7b5-b54c-b5a7-14c04fc3181f"],
+Cell[160782, 4441, 669, 13, 17, "Print",ExpressionUUID->"690556e3-e5f3-6d47-b92e-c1ca33b588f5"],
+Cell[161454, 4456, 669, 13, 17, "Print",ExpressionUUID->"f52339f9-821e-b244-a07a-c1cdad88ae3a"],
+Cell[162126, 4471, 671, 13, 17, "Print",ExpressionUUID->"60150766-432a-2145-8471-33f3cf09de8a"],
+Cell[162800, 4486, 671, 13, 17, "Print",ExpressionUUID->"1dddf8f4-8171-8c43-b290-e790ea46719c"],
+Cell[163474, 4501, 669, 13, 17, "Print",ExpressionUUID->"d9b9e6ae-e9af-e545-9231-899de0cbc6b7"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
