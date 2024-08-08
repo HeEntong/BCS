@@ -101,13 +101,9 @@ if prob.status == 'optimal':
         for X in Xlist:
             result.write(str(X.value.tolist()) + "\n")
         result.write("List of qleft: \n")
-        refutation = []
         result.write(str([qleftlist[i].value.tolist() for i in range(len(qleftlist))]) + "\n")
-        result.write(str(refutation) + "\n")
         result.write("List of qright: \n")
-        refutation = []
         result.write(str([qrightlist[i].value.tolist() for i in range(len(qrightlist))]) + "\n")
-        result.write(str(refutation) + "\n")
         
 
 elif prob.status == 'infeasible':
